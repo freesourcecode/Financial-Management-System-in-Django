@@ -1,0 +1,149 @@
+{% extends 'apps_base.html' %}
+
+{% block title %}Tax{% endblock %}
+
+{% block apps_base_title %}Tax Calculation{% endblock %}
+
+{% block apps_base_content %}
+    <div class="cb">
+    <div class="cleft">
+    <div class="lbox container">
+        <label for="taxType" class="text-muted">Select type of tax</label>
+        <select class="custom-select" id="taxType"
+                onchange="
+                      if(document.all.taxType.value===0)
+                      {
+                          location = location.href;
+                          return;
+                      }location=document.all.taxType.value;">
+            <option value="index.html" selected="selected">Wages</option>
+        </select>
+        <input id="txtIncome" class="form-control single-input mt-4" style="margin: 0 auto;max-width: 400px" name=""
+               type="number" min="0" step="0.01" placeholder="Please enter the pre-tax income"/>
+        <button class="btn btn-primary btn-block" style="max-width: 110px; margin: 2em auto"
+                onclick="btnCalc_onClick()">Calculate
+        </button>
+
+        <div class="lbox2">
+            <h4 style="display: none;" id="result-title">Result</h4>
+            <div id="resultCon" style="text-align:center; font-size:16px; line-height:200%;"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block apps_base_scripts %}
+    <script>
+        function btnCalc_onClick() {
+            if (isNaN(document.getElementById("txtIncome").value) || !document.getElementById("txtIncome").value) {
+                alert("Please enter the correct salary");
+                return;
+            }
+            var result = '';
+            var v = parseInt(document.getElementById("txtIncome").value);
+            var bx = 0;
+            if (v < 3500) {
+                result = '<div class="alert alert-danger">\n' +
+                    '<p class="my-0">No need to pay taxes!</p>\n' +
+                    '</div>';
+            } else {
+                v = v * 100;
+                result = '<table id="restb" style="width:100%;"><tr style="color:#999;"><td></td><td>Individual payment</td><td>Company payment</td></tr>';
+                if (v > 2311800) {
+                    var bx1 = 2311800 * 0.08;
+                    result += '<tr style="background:#f1f1f1;"><td>Pension</td><td>' + parseFloat(bx1 / 100).toFixed(2);
+                    var qy1 = 2311800 * 0.19;
+                    result += '</td><td>' + parseFloat(qy1 / 100).toFixed(2);
+                    result += '</td></tr>';
+                    var bx2 = 2311800 * 0.02;
+                    result += '<tr><td>Medical insurance money</td><td>' + parseFloat(bx2 / 100).toFixed(2);
+                    var qy2 = 2311800 * 0.10;
+                    result += '</td><td>' + parseFloat(qy2 / 100).toFixed(2);
+                    result += '</td></tr>';
+                    var bx3 = 2311800 * 0.002;
+                    result += '<tr style="background:#f1f1f1;"><td>Unemployment insurance benefits</td><td>' + parseFloat(bx3 / 100).toFixed(2);
+                    var qy3 = 2311800 * 0.008;
+                    result += '</td><td>' + parseFloat(qy3 / 100).toFixed(2);
+                    result += '</td></tr>';
+                } else {
+                    bx1 = v * 0.08;
+                    result += '<tr style="background:#f1f1f1;"><td>Pension</td><td>' + parseFloat(bx1 / 100).toFixed(2);
+                    qy1 = v * 0.19;
+                    result += '</td><td>' + parseFloat(qy1 / 100).toFixed(2);
+                    result += '</td></tr>';
+                    bx2 = v * 0.02;
+                    result += '<tr><td>Medical insurance money</td><td>' + parseFloat(bx2 / 100).toFixed(2);
+                    qy2 = v * 0.10;
+                    result += '</td><td>' + parseFloat(qy2 / 100).toFixed(2);
+                    result += '</td></tr>';
+                    bx3 = v * 0.002;
+                    result += '<tr style="background:#f1f1f1;"><td>Unemployment insurance benefits</td><td>' + parseFloat(bx3 / 100).toFixed(2);
+                    qy3 = v * 0.008;
+                    result += '</td><td>' + parseFloat(qy3 / 100).toFixed(2);
+                    result += '</td></tr>';
+                }
+                var bx4 = (v * 0.12 > 277400 ? 277400 : v * 0.12);
+                result += '<tr><td>Housing fund</td><td>' + parseFloat(bx4 / 100).toFixed(2);
+                var qy4 = (v * 0.12 > 277400 ? 277400 : v * 0.12);
+                result += '</td><td>' + parseFloat(qy4 / 100).toFixed(2);
+                result += '</td></tr>';
+                var bx5 = v * 1;
+                result += '<tr  style="background:#f1f1f1;"><td>Work injury insurance</td><td> 0 ';
+                var qy5 = v * 0.004;
+                result += '</td><td>' + parseFloat(qy5 / 100).toFixed(2);
+                result += '</td></tr>';
+                var bx6 = v * 1;
+                result += '<tr><td>Maternity insurance money</td><td> 0 ';
+                var qy6 = v * 0.008;
+                result += '</td><td>' + parseFloat(qy6 / 100).toFixed(2);
+                result += '</td></tr>';
+                var bx7 = bx1 + bx2 + bx3 + bx4;
+                result += '<tr  style="background:#f1f1f1;"><td>Total</td><td style="font-weight:bold;">' + parseFloat(bx7 / 100).toFixed(2);
+                var qy7 = qy1 + qy2 + qy3 + qy4 + qy5 + qy6;
+                result += '</td><td style="font-weight:bold;">' + parseFloat(qy7 / 100).toFixed(2);
+                result += '</td></tr>';
+                var bx8 = v - bx7;
+                result += '<tr><td>Taxable wages</td><td colspan="2">' + parseFloat(bx8 / 100).toFixed(2);
+                result += '</td></tr>';
+                var tax = GetTax(bx8 - 350000);
+                result += '<tr  style="background:#f1f1f1;"><td>Tax payment</td><td style="font-weight:bold;" colspan="2">' + parseFloat(tax / 100).toFixed(2);
+                result += '</td></tr>';
+                var salary = bx8 - tax;
+                result += '<tr><td>Salary after tax</td><td style="font-weight:bold;color:#f00;" colspan="2">' + parseFloat(salary / 100).toFixed(2);
+                result += '</td></tr>';
+                var qyall = Math.floor((v + qy7) / 100);
+                var jnall = Math.floor((bx7 + qy7) / 100);
+                var lastsalary = Math.floor(salary / 100);
+                var lastpercent = Math.floor(parseFloat(lastsalary / qyall) * 100);
+                result += '<tr><td colspan="3"><div style="background:#f90;height:30px;"><div style="height:30px;background:#090;color:#fff;float:left;width:' + lastpercent + '%">Wage ' + lastsalary + ' Yuan</div><div style="color:#fff;float:right;margin-right:20px;">Pay ' + jnall + ' Yuan</div></div></td></tr>';
+                result += '</table>';
+            }
+            document.getElementById("result-title").style.display = "block";
+            document.getElementById("resultCon").innerHTML = result;
+        }
+
+        function GetTax(income) {
+            var re = 0;
+            if (income < 0) return 0;
+            if (income < 150000)
+                re = income * 0.03;
+            else if (income >= 150000 && income < 450000)
+                re = income * 0.1 - 10500;
+            else if (income >= 450000 && income < 900000)
+                re = income * 0.2 - 55500;
+            else if (income >= 900000 && income < 3500000)
+                re = income * 0.25 - 100500;
+            else if (income >= 3500000 && income < 5500000)
+                re = income * 0.30 - 275500;
+            else if (income >= 5500000 && income < 8000000)
+                re = income * 0.35 - 550500;
+            else if (income >= 8000000)
+                re = income * 0.45 - 1350500;
+            return re;
+        }
+
+
+    </script>
+
+{% endblock %}
+
+

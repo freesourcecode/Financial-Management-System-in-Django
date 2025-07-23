@@ -1,0 +1,75 @@
+{% extends 'apps_base.html' %}
+
+{% block title %}Tables{% endblock %}
+
+{% block apps_base_title %}Add a table{% endblock %}
+
+{% block apps_base_content %}
+    <form action="{% url 'create_table' %}" method="post" class="form-fluid">
+        {% csrf_token %}
+        <header class="form-title text-muted">Table Information</header>
+        <div class="container row">
+            <input id="create-table-workplace-uuid" name="workplace_uuid" type="hidden" value="{{ workplace_uuid }}"/>
+            <div class="form-group col-md-6">
+                <label for="create-table-name">Name</label>
+                <input id="create-table-name" class="form-control" type="text" name="table_name" maxlength="40"
+                       required/>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="create-table-date">Date</label>
+                <input id="create-table-date" class="form-control auto-set-to-today" type="date" name="date" required/>
+            </div>
+        </div>
+        <header class="form-title text-muted">Items in Table</header>
+        <div>
+        <div class="container row" id="input-box-0">
+            <div class="form-group col-md-6" id="input-name-0">
+                <label for="create-table-item-name-0">Name</label>
+                <input id="create-table-item-name-0" name="item_name_0" type="text" class="form-control" maxlength="40"
+                       required>
+            </div>
+            <div class="form-group col-md-6" id="input-change-0">
+                <label for="create-table-item-money-change-0">Money Change</label>
+                <input id="create-table-item-money-change-0" name="item_money_change_0" type="number"
+                       class="form-control"
+                       step="0.01" required>
+            </div>
+        </div>
+        <div id="add-input-box">
+            <script language="JavaScript">
+                var i = 1;
+            </script>
+            <button class="btn btn-primary" style="margin: 0 auto" type="button" onclick="doAdd()">Add</button>
+            <button class="btn btn-danger" style="margin: 0 auto" type="button" onclick="doDelete()">Delete</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+        </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block base_scripts %}
+    <script language="JavaScript" script.src="jquery.js">
+        function doAdd() {
+            var d = document.getElementById("add-input-box");
+            var s1 = "<div class=\"container row\"  id=\"input-box-" + i.toString() + "\">" + "<div class=\"form-group col-md-6\" id=\"input-name-" + i.toString() + "\">";
+            var s2 = "<label for=\"create-table-item-name-" + i.toString() + "\">Name</label>";
+            var s3 = "<input id=\"create-table-item-name-" + i.toString() + "\" name=\"item_name_" + i.toString() + "\" type=\"text\" class=\"form-control\" maxlength=\"40\" required></div>";
+            var s4 = "<div class=\"form-group col-md-6\" id=\"input-change-" + i.toString() + "\">";
+            var s5 = "<label for=\"create-table-item-money-change-" + i.toString() + "\">" + "Money Change</label>";
+            var s6 = "<input id=\"create-table-item-money-change-" + i.toString() + "\"" + " name=\"item_money_change_" + i.toString() + "\" type=\"number\" class=\"form-control\" step=\"0.01\" required> </div> </div>"
+            var s = s1 + s2 + s3 + s4 + s5 + s6;
+            d.insertAdjacentHTML('beforebegin', s);
+            i++;
+        }
+        function doDelete() {
+            if(i <= 1) {
+                alert("at least one item");
+            } else {
+                var s1 = "input-box-" + (--i).toString();
+                var d = document.getElementById(s1);
+                d.parentNode.removeChild(d);
+            }
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'outer_base.html' %}
+
+{% block title %}{{ alert.1 }}{% endblock %}
+
+{% block outer_base_content %}
+    <div class="container">
+        <div class="alert alert-success my-5 text-center">
+            <strong>{{ alert.1 }}</strong>
+            <p>{{ alert.2 }}</p>
+            <p>
+                The browser will redirect in <span id="countdown"></span> seconds. Click
+                <a href="{{ redirect_link }}">HERE</a>
+                to redirect now.
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block outer_base_scripts %}
+    <script>
+        // Total seconds to wait
+        var seconds = 3;
+
+        function countdown() {
+            seconds = seconds - 1;
+            if (seconds < 0) {
+                // Chnage your redirection link here
+                window.location = "{% url 'login' %}";
+            } else {
+                // Update remaining seconds
+                document.getElementById("countdown").innerHTML = seconds;
+
+                // Count down using javascript
+                window.setTimeout("countdown()", 1000);
+            }
+        }
+
+        // Run
+        countdown();
+    </script>
+{% endblock %}

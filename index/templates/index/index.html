@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}Financial Management System{% endblock %}
+
+{% block home_url %}{% url 'index' %}{% endblock %}
+
+{% block base_stylesheets %}
+    <style>
+        #global-alerts {
+            display: none;
+        }
+
+        /* Carousel base class */
+        .carousel {
+            margin-bottom: 4rem;
+            text-shadow: 1px 1px 1px grey;
+        }
+
+        /* Since positioning the image, we need to help out the caption */
+        .carousel-caption {
+            bottom: 3rem;
+            z-index: 10;
+        }
+
+        /* Declare heights because of positioning of img element */
+        .carousel-item {
+            height: 32rem;
+            background-color: #777;
+        }
+
+        .carousel-item > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            height: 32rem;
+        }
+
+        /* MARKETING CONTENT
+        -------------------------------------------------- */
+
+        /* Center align the text within the three columns below the carousel */
+        .marketing .col-lg-4 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .marketing h2 {
+            font-weight: 400;
+        }
+
+        .marketing .col-lg-4 p {
+            margin-right: .75rem;
+            margin-left: .75rem;
+        }
+
+        /* Featurettes
+        ------------------------- */
+
+        .featurette-divider {
+            margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+        }
+
+        /* Thin out the marketing headings */
+        .featurette-heading {
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -.05rem;
+        }
+
+        /* RESPONSIVE CSS
+        -------------------------------------------------- */
+
+        @media (min-width: 40em) {
+            /* Bump up size of carousel content */
+            .carousel-caption p {
+                margin-bottom: 1.25rem;
+                font-size: 1.25rem;
+                line-height: 1.4;
+            }
+
+            .featurette-heading {
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 62em) {
+            .featurette-heading {
+                margin-top: 7rem;
+            }
+        }
+    </style>
+
+{% endblock %}
+
+{% block base_content %}
+    <main role="main">
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+                <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+            </ol>
+            {% load static %}
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="first-slide"
+                         src="{% static 'img/slide-1.jpg' %}"
+                         alt="First slide">
+                    <div class="container">
+                        <div class="carousel-caption text-left">
+                            <h1>Manage efficiently</h1>
+                            <p>With our financial manage system, you will be the best friend with high efficiency.</p>
+                            <p>
+                                <a class="btn btn-lg btn-primary" href="{% url 'signup' %}" role="button">Sign up
+                                    now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="second-slide"
+                         src="{% static 'img/slide-2.png' %}"
+                         alt="Second slide">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Many supported affairs</h1>
+                            <p>We now support your business affairs with managements of salary, taxes, tables.</p>
+                            <p><a class="btn btn-lg btn-primary" href="{% url 'signup' %}" role="button">Sign up now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="third-slide"
+                         src="{% static 'img/slide-3.jpg' %}"
+                         alt="Third slide">
+                    <div class="container">
+                        <div class="carousel-caption text-right">
+                            <h1>Much more potential</h1>
+                            <p>This system is long-term supported by our passionate developers.</p>
+                            <p><a class="btn btn-lg btn-primary" href="{% url 'signup' %}" role="button">Sign up now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+        <!-- Marketing messaging and featurettes
+        ================================================== -->
+        <!-- Wrap the rest of the page in another container to center all the content. -->
+
+        <div class="container marketing">
+
+            <!-- Three columns of text below the carousel -->
+            <div class="row">
+                <div class="col-lg-4">
+                    <img class="rounded-circle"
+                         src="{% static 'img/companies.jpg' %}" alt="companies" width="140" height="140">
+                    <h2>Create your companies</h2>
+                    <p>Everyone can create their own companies to manage business affairs. You will never feel confused
+                        with affairs in different places and they are kindly organized.</p>
+                    <p><a class="btn btn-secondary"
+                          href="{% url 'companies' owned_companies_page_num=1 workplaces_page_num=1 %}" role="button">View
+                        details »</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="rounded-circle"
+                         src="{% static 'img/affairs.jpg' %}" alt="affairs" width="140" height="140">
+                    <h2>Be efficient on different affairs</h2>
+                    <p>Not only receipts, but tables and taxes management are support on this system. Feel free to make
+                        best use of them!</p>
+                    <p><a class="btn btn-secondary" href="{% url 'info' %}" role="button">View details »</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="rounded-circle"
+                         src="{% static 'img/salary.jpg' %}" alt="salary" width="140" height="140">
+                    <h2>Don't forget your employees</h2>
+                    <p>Every employee deserves their job! You can easily pay them. Feel
+                        free to fire who doesn't work in companies page.</p>
+                    <p><a class="btn btn-secondary" href="{% url 'salary' %}" role="button">View details »</a></p>
+                </div><!-- /.col-lg-4 -->
+            </div><!-- /.row -->
+
+
+            <!-- START THE FEATURETTES -->
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">First be more familiar with FINANCE. <span class="text-muted">It'll blow your mind.</span>
+                    </h2>
+                    <p class="lead">Finance is a field that deals with the study of investments. It includes the
+                        dynamics of assets and liabilities over time under conditions of different degrees of
+                        uncertainty and risk. Finance can also be defined as the science of money management. Finance
+                        aims to price assets based on their risk level and their expected rate of return.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+                         style="width: 500px; height: 500px;"
+                         src="{% static 'img/business-1.png' %}"
+                         data-holder-rendered="true">
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="featurette-heading">Oh yeah, it's that good. <span
+                            class="text-muted">See for why to manage finance.</span></h2>
+                    <p class="lead">Financial management of your small business encompasses more than keeping an
+                        accurate set of books and balancing your business checking account. You must manage your
+                        finances so you don’t overspend and so you remain prepared for all expenditures, as well as
+                        profit distributions. Your financial management responsibilities affect all aspects of your
+                        business. A company that sells well but has poor financial management can fail.
+                    </p>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+                         src="{% static 'img/business-2.jpg' %}"
+                         data-holder-rendered="true" style="width: 500px; height: 500px;">
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Workmate.</span></h2>
+                    <p class="lead">Employer and managerial control within an organization rests at many levels and has
+                        important implications for staff and productivity alike, with control forming the fundamental
+                        link between desired outcomes and actual processes. Employers must balance interests such as
+                        decreasing wage constraints with a maximization of labor productivity in order to achieve a
+                        profitable and productive employment relationship.
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+                         src="{% static 'img/business-3.jpg' %}"
+                         data-holder-rendered="true" style="width: 500px; height: 500px;">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <!-- /END THE FEATURETTES -->
+        </div><!-- /.container -->
+    </main>
+{% endblock %}
